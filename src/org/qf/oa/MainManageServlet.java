@@ -3,13 +3,12 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.qf.oa.util.DBUtil;
-import org.qf.oa.vo.User;
-public class MainManageAction extends HttpServlet{
+@WebServlet("/MainManageServlet")
+public class MainManageServlet extends HttpServlet{
 	/**
 	 * @Field serialVersionUID
 	 */
@@ -46,7 +45,7 @@ public class MainManageAction extends HttpServlet{
 		
 		
 		
-		req.getRequestDispatcher("mainManager.jsp").forward(req, resp);
+		req.getRequestDispatcher("mainManage.jsp").forward(req, resp);
 	}
 	public void execute(){
 		

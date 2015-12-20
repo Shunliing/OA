@@ -34,18 +34,18 @@ public class LoginServlet extends HttpServlet {
 
 		String sql = "select * from oa_user u where u.user_name='" + name
 				+ "' and u.user_pwd='" + pwd + "'";
-		ResultSet rs = DBUtil.getResult(sql, "");
+		ResultSet rs = DBUtil.getResult(sql);
 		try {
 			if (rs.next()) {
 				int right = rs.getInt("role_number");
 				int number = rs.getInt("user_number");
 				req.getSession().setAttribute("user", number);
 				req.getSession().setAttribute("right", right);
-				// return "mainmanage";
+				req.getRequestDispatcher("/MainManageServlet").forward(req, resp);
 			} else {
 				req.setAttribute("error", "用户名或密码有误");
 				req.getRequestDispatcher("login.jsp").forward(req, resp);
-				;
+				
 			}
 		} catch (SQLException e) {
 			// TODO 自动生成的 catch 块
