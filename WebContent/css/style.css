@@ -1,9 +1,24 @@
-body {
-  	margin: 0;
-  	padding: 0;
-  	text-align: center; 
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<!--
+td {
+	font-size: 9pt;	color: #000000;
 }
-#sendfile #li11{
-	display:block;
+a:hover {
+	font-size: 9pt;	color: #FF0000;
 }
-
+a {
+	font-size: 9pt;	text-decoration: none;	color: #000000;
+	noline:expression(this.onfocus=this.blur);
+}
+img{
+	border:0;
+}
+.blue {
+	font-size: 9pt;	color: #034683;
+}
+input{
+	font-family: "宋体";
+	font-size: 9pt;
+	color: #333333;
+}
+-->

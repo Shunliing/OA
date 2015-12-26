@@ -3,17 +3,26 @@
 	xmlns="http://java.sun.com/xml/ns/javaee"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	id="WebApp_ID" version="3.0">
-	<display-name>OA</display-name>
+	<display-name>myoa</display-name>
 	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
 		<welcome-file>index.html</welcome-file>
-		<welcome-file>index.htm</welcome-file>
 		<welcome-file>login.jsp</welcome-file>
 		<welcome-file>default.html</welcome-file>
 		<welcome-file>default.htm</welcome-file>
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
 
-	<!-- Comet4j配置开始 -->
+   <!-- 自定义标签声明 -->
+	<jsp-config>
+		<taglib>
+			<taglib-uri>office</taglib-uri>
+			<taglib-location>/WEB-INF/tld/office.tld</taglib-location>
+		</taglib>
+
+	</jsp-config>
+
+	<!-- Comet4j配置开始
 	<listener>
 		<description>Comet4J容器侦听</description>
 		<listener-class>org.comet4j.core.CometAppListener</listener-class>
@@ -33,6 +42,6 @@
 		<description>HelloWorld</description>
 		<listener-class>org.qf.oa.HelloListener</listener-class>
 	</listener>
-	<!-- Comet4j配置结束 -->
+	 Comet4j配置结束 -->
 
 </web-app>
