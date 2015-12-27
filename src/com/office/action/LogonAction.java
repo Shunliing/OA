@@ -16,128 +16,94 @@ import com.office.dao.Content;
 import com.office.officemenu.MenuSigle;
 import com.office.util.DBUtil;
 import com.office.vo.User;
+
+/*
+ * 登录相关的Servlet：
+ *   涉及校验事宜
+ */
 @WebServlet("/LoginServlet")
 public class LogonAction extends HttpServlet {
 	/**
 	 * @Field serialVersionUID
 	 */
 	private static final long serialVersionUID = -2598581559336754688L;
+
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		// TODO 自动生成的方法存根
 		super.doGet(req, resp);
 	}
+
+	// post方法调用
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-	    String username=req.getParameter("username");
-	    String userpassword=req.getParameter("password");
-	    HttpSession session = req.getSession();
-	   
-		String sql="select * from "+Content.TB_USER+" where "+Content.USERNAME+"='"+username+"' and "+Content.USERPASSWORD+"='"+userpassword+"'";
-		ResultSet rs=DBUtil.getResult(sql);
+		String username = req.getParameter("username");
+		String userpassword = req.getParameter("password");
+		HttpSession session = req.getSession();
+		// 用户是否存在
+		String sql = "select * from " + Content.TB_USER + " where "
+				+ Content.USERNAME + "='" + username + "' and "
+				+ Content.USERPASSWORD + "='" + userpassword + "'";
+		ResultSet rs = DBUtil.getResult(sql);
 		try {
-			if(rs.next()){					
-	
-			         
-				  //session.setAttribute("logonuser",logonform);
-			      session.setAttribute("selectmenu1", "index");
-			      int userable = rs.getInt(Content.USERABLE);
-			      Loadmenu(userable,req);
-			      User user = new User();
-			      user.setUsername(rs.getString(Content.USERNAME));
-			      user.setUsertruename(rs.getString(Content.USERTRUENAME));
-			      user.setUserable(rs.getInt(Content.USERABLE));
-			      user.setUsergood(rs.getString(Content.USERGOOD));
-			      user.setUserbranch(rs.getString(Content.USERBRANCH));
-			      user.setUserjob(rs.getString(Content.USERJOB));
-			      user.setUsersex(rs.getString(Content.USERSEX));
-			      user.setUseremail(rs.getString(Content.USEREMAIL));
-			      user.setUsertel(rs.getString(Content.USERTEL));
-			      user.setUseraddress(rs.getString(Content.USERADDRESS));		   
-			      user.setUseraccesstimes(rs.getInt(Content.USERACCESSTIMES)+1);
-			      user.setUserfoundtime(rs.getString(Content.USERFOUNDTIME));
+			if (rs.next()) {
+				//Session中保存
+				session.setAttribute("selectmenu1", "index");
+				int userable = rs.getInt(Content.USERABLE);
+				Loadmenu(userable, req);
+				User user = new User();
+				user.setUsername(rs.getString(Content.USERNAME));
+				user.setUsertruename(rs.getString(Content.USERTRUENAME));
+				user.setUserable(rs.getInt(Content.USERABLE));
+				user.setUsergood(rs.getString(Content.USERGOOD));
+				user.setUserbranch(rs.getString(Content.USERBRANCH));
+				user.setUserjob(rs.getString(Content.USERJOB));
+				user.setUsersex(rs.getString(Content.USERSEX));
+				user.setUseremail(rs.getString(Content.USEREMAIL));
+				user.setUsertel(rs.getString(Content.USERTEL));
+				user.setUseraddress(rs.getString(Content.USERADDRESS));
+				user.setUseraccesstimes(rs.getInt(Content.USERACCESSTIMES) + 1);
+				user.setUserfoundtime(rs.getString(Content.USERFOUNDTIME));
 
-			      session.setAttribute("logonuser", user);
-			      req.getRequestDispatcher("default.jsp").forward(req, resp);
-				
-			}
-			else{
+				session.setAttribute("logonuser", user);
+				req.getRequestDispatcher("default.jsp").forward(req, resp);
+
+			} else {
 				req.setAttribute("error", "invalid username or password");
-				 req.getRequestDispatcher("index.jsp").forward(req, resp);
+				req.getRequestDispatcher("index.jsp").forward(req, resp);
 			}
 		} catch (SQLException e) {
 			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
-	    
-		
+
 	}
-//	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		ActionForward forward=new ActionForward();
-//		String mark=mapping.getParameter();
-//		if(mark.equals("logon_no"))
-	//    forward=executeLogonNo(mapping,form,request,response);   //在登录模块中单击“登录”按钮时触发该方法
-   //   if(mark.equals("index"))
-   // 	  forward=executeIndex(mapping,form,request,response);     //在首页index.jsp中单击“首页”链接时触发该方法
-//		return forward;
-//	}
-//	public ActionForward executeLogonNo(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		HttpSession session=request.getSession();
-//		
-//		LogonForm logonform=(LogonForm)form;
-//		ActionMessages errors=new ActionMessages(); 
 
-//	    boolean mark=true;
-//	    if(username==null||username.equals("")){
-//	    	errors.add("noname",new ActionMessage("office.no.username.error"));
-//	        mark=false;
-//	    }
-//	    if(userpassword==null||userpassword.equals("")){
-//	    	errors.add("nopswd",new ActionMessage("office.no.userpassword.error"));
-//	        mark=false;
-//	    }
-//	    if(!mark){
-//	    	saveErrors(request,errors);
-//	        return mapping.findForward("false");
-//	    }	    
-//	    ArrayList personsearchtypelist = Searchtypelist.getpersonsearchtypelist();
-//		ArrayList cartypelist = Searchtypelist.getcarsearchtypelist();
-//		ArrayList thingtypelist = Searchtypelist.getthingsearchtypelist();
-//		ArrayList advicetypelist=Searchtypelist.getadvicesearchtypelist();
-//		session.setAttribute("personsearchtypelist", personsearchtypelist);
-//		session.setAttribute("cartypelist", cartypelist);
-//		session.setAttribute("thingtypelist", thingtypelist);
-//		session.setAttribute("advicetypelist", advicetypelist);
-//	    
+	// 加载用户一级菜单
+	private void Loadmenu(int userable, HttpServletRequest request) {
+		ArrayList<MenuSigle> menuList = new ArrayList<MenuSigle>();
+		String sql = "select * from " + Content.TB_MENU + " where "
+				+ Content.USERABLE + " <= " + userable + " and "
+				+ Content.MENUJIBIE + "='1' order by " + Content.MENUORDER;
 
-//	}
-	private void Loadmenu(int userable,HttpServletRequest request){
-		ArrayList<MenuSigle> menuList=new ArrayList<MenuSigle>();
-		String sql="select * from "+Content.TB_MENU+" where "+Content.USERABLE+" <= "+userable+" and "+Content.MENUJIBIE+"='1' order by "+Content.MENUORDER;
-
-        ResultSet rs = DBUtil.getResult(sql);
-        try {
-			while(rs.next()){
-			   MenuSigle menusigle=new MenuSigle();
-			   menusigle.setMenuid(rs.getString(Content.MENUID));
-			   menusigle.setMenuname(rs.getString(Content.MENUNAME));
-			   menusigle.setMenuaction(rs.getString(Content.MENUACTION));
-			   menusigle.setMenuorder(rs.getInt(Content.MENUORDER));
-			   menuList.add(menusigle);
+		ResultSet rs = DBUtil.getResult(sql);
+		try {
+			while (rs.next()) {
+				MenuSigle menusigle = new MenuSigle();
+				menusigle.setMenuid(rs.getString(Content.MENUID));
+				menusigle.setMenuname(rs.getString(Content.MENUNAME));
+				menusigle.setMenuaction(rs.getString(Content.MENUACTION));
+				menusigle.setMenuorder(rs.getInt(Content.MENUORDER));
+				menuList.add(menusigle);
 			}
 		} catch (SQLException e) {
 			// TODO 自动生成的 catch 块
 			e.printStackTrace();
-		}       
-			
-    	HttpSession session=request.getSession();
-	    session.setAttribute("menulist", menuList);
+		}
+
+		HttpSession session = request.getSession();
+		session.setAttribute("menulist", menuList);
 
 	}
-//	public ActionForward executeIndex(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		HttpSession session=request.getSession();
-//		session.setAttribute("selectmenu1","index");
-//		return mapping.findForward("success");
-//	}
 }

@@ -19,8 +19,11 @@ import com.office.dao.Page;
 import com.office.vo.Document;
 import com.office.vo.Meet;
 import com.office.vo.Pcard;
-
+/*
+ * 数据库工具类
+ */
 public class DBUtil {
+	//使用属性文件
 	private static Properties props = new Properties();
 
 	private static Connection conn;
@@ -41,7 +44,7 @@ public class DBUtil {
 			e.printStackTrace();
 		}
 	}
-
+    //获取连接    
 	public static Connection getConn() {
 		conn = tl.get();
 		if (null == conn) {
@@ -63,7 +66,7 @@ public class DBUtil {
 		}
 		return conn;
 	}
-
+    //获取结果集
 	public static ResultSet getResult(String sql) {
 		Connection conn = getConn();
 		try {
@@ -74,22 +77,7 @@ public class DBUtil {
 			e.printStackTrace();
 		}
 		return rs;
-	}
-
-	public static ResultSet getResult(String sql, Object... params) {
-		Connection conn = getConn();
-		try {
-			ps = conn.prepareStatement(sql);
-			for (int i = 0; i < params.length; i++) {
-				ps.setObject(i + 1, params[i]);
-			}
-			rs = ps.executeQuery();
-		} catch (SQLException e) {
-			System.out.println("sql查询异常!!");
-			e.printStackTrace();
-		}
-		return rs;
-	}
+	}	
 
 	// 获取结果集，放入List中
 	public static List<Map<String, Object>> getList(String sql) {
@@ -116,7 +104,7 @@ public class DBUtil {
 		}
 		return list;
 	}
-
+    //获取增删改的结果
 	public static boolean getExecute(String sql) {
 		boolean flag = false;
 		Connection conn = getConn();
@@ -131,7 +119,7 @@ public class DBUtil {
 		}
 		return flag;
 	}
-
+   //关闭结果
 	public static void closeAll() {
 		if (rs != null) {
 			try {
@@ -258,7 +246,7 @@ public class DBUtil {
 		}
 		return list;
 	}
-	
+	 //获取公告相关信息
 	 public ArrayList<Pcard> getallpcardlist(String sql,int pos){
 	    	System.out.println(sql);
 	    	ArrayList<Pcard> list=new ArrayList<Pcard>();	    	

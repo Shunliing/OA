@@ -17,6 +17,9 @@ import com.office.util.DBUtil;
 import com.office.vo.Meet;
 import com.office.vo.User;
 
+/*
+ * 会议相关的Servlet
+ */
 @WebServlet("/MeetServlet")
 public class MeetAction extends HttpServlet {
 
@@ -32,6 +35,7 @@ public class MeetAction extends HttpServlet {
 		doPost(req, resp);
 	}
 
+	// Post方法调用
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -45,10 +49,6 @@ public class MeetAction extends HttpServlet {
 
 		if (mark.equals("query"))
 			url = executeMeetLook(request, response);
-		// if(mark.equals("meet_sigle_look"))
-		// url=executeMeetSigleLook(request,response);
-		// if(mark.equals("meet_del"))
-		// url=executeMeetDel(request,response);
 		if (mark.equals("link")) {
 			url = "/meet/Add_meet.jsp";
 		}
@@ -57,6 +57,7 @@ public class MeetAction extends HttpServlet {
 		request.getRequestDispatcher(url).forward(request, response);
 	}
 
+	// 查询所有会议信息
 	public String executeMeetLook(HttpServletRequest request,
 			HttpServletResponse response) {
 		ArrayList<Meet> meetlist = new ArrayList<>();
@@ -86,65 +87,7 @@ public class MeetAction extends HttpServlet {
 		return "/meet/Look_meet.jsp";
 	}
 
-	// public ActionForward executeMeetSigleLook(ActionMapping mapping,
-	// ActionForm form,HttpServletRequest request, HttpServletResponse
-	// response){
-	// ArrayList meetlist=new ArrayList();
-	// HttpSession session=request.getSession();
-	// MeetForm textform=(MeetForm)form;
-	// String lookid1=request.getParameter("id");
-	// if(lookid1==null||lookid1.equals(""))lookid1="0";
-	// int lookid=Change.strtoint(lookid1);
-	// meetlist=(ArrayList)session.getAttribute("meetlist");
-	// boolean flag=false;
-	// if(meetlist!=null||meetlist.size()!=0){
-	// for(int i=0;i<meetlist.size();i++){
-	// MeetForm meetsigleform=(MeetForm)meetlist.get(i);
-	// if(lookid==meetsigleform.getMeetid()){
-	// flag=true;
-	// textform.setSubject(meetsigleform.getSubject());
-	// textform.setSpeaker(meetsigleform.getSpeaker());
-	// textform.setListener(meetsigleform.getListener());
-	// textform.setAddress(meetsigleform.getAddress());
-	// textform.setContent(meetsigleform.getContent());
-	// textform.setTime(meetsigleform.getTime());
-	// break;
-	// }
-	// }
-	// }
-	// if(!flag){
-	// ActionMessages errors=new ActionMessages();
-	// errors.add("lookR",new ActionMessage("office.meet.look.sigle.error"));
-	// saveErrors(request,errors);
-	// return mapping.findForward("false");
-	// }
-	// return mapping.findForward("success");
-	// }
-	// public ActionForward executeMeetDel(ActionMapping mapping, ActionForm
-	// form,HttpServletRequest request, HttpServletResponse response){
-	// ActionMessages errors=new ActionMessages();
-	// HttpSession session=request.getSession();
-	// LogonForm logonuser=(LogonForm)session.getAttribute("logonuser");
-	// if(!CheckUserAble.check(logonuser)){
-	// session.setAttribute("selectmenu2", "");
-	// errors.add("notAllow",new ActionMessage("office.user.noallow"));
-	// saveErrors(request,errors);
-	// return mapping.findForward("notallow");
-	// }
-	//
-	// String id1=request.getParameter("id");
-	// int id=Change.strtoint(id1);
-	// String
-	// sql="delete from "+Content.TB_MEET+" where "+Content.MEETID+"="+id;
-	// DB db=new DB();
-	// int i=db.del(sql);
-	// if(i==0){
-	// errors.add("deleteR",new ActionMessage("office.del.false"));
-	// saveErrors(request,errors);
-	// return mapping.findForward("false");
-	// }
-	// return mapping.findForward("success");
-	// }
+	// 添加新会议信息
 	public String executeMeetAdd(HttpServletRequest request,
 			HttpServletResponse response) {
 
@@ -158,7 +101,6 @@ public class MeetAction extends HttpServlet {
 		}
 
 		session.setAttribute("selectmenu2", "meet_add");
-		boolean flag = true;
 		String mark = request.getParameter("type");
 		if (mark == null || mark.equals(""))
 			mark = "link";
@@ -167,44 +109,20 @@ public class MeetAction extends HttpServlet {
 		if (mark.equals("add")) {
 			String time = request.getParameter("time");
 			String speaker = request.getParameter("speaker");
-			String listener =request.getParameter("listener");
+			String listener = request.getParameter("listener");
 			String address = request.getParameter("address");
 			String subject = request.getParameter("subject");
 			String content = request.getParameter("content");
-			if (time == null || time.equals("")) {			
-				flag = false;
-			}
-			if (speaker == null || speaker.equals("")) {
-				
-				flag = false;
-			}
-			if (listener == null || listener.equals("")) {
-				
-				flag = false;
-			}
-			if (address == null || address.equals("")) {
-				
-				flag = false;
-			}
-			if (subject == null || subject.equals("")) {
-			
-				flag = false;
-			}
-			if (content == null || content.equals("")) {
-				
-				flag = false;
-			}
-			
-			
 
 			String sql = "insert into " + Content.TB_MEET + " values('"
 					+ subject + "','" + speaker + "','" + listener + "','"
 					+ time + "','" + address + "','" + content + "')";
-			boolean f =DBUtil.getExecute(sql);
+			boolean f = DBUtil.getExecute(sql);
 			if (!f) {
-				request.setAttribute("error", "");				
+				request.setAttribute("error", "");
 			}
 		}
-		return executeMeetLook(request,response);
+		//重新查询一次
+		return executeMeetLook(request, response);
 	}
 }

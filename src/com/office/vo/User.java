@@ -1,5 +1,7 @@
 package com.office.vo;
-
+/*
+ * 用户相关VO
+ */
 public class User {
 	private int userid;
 	private int userable;

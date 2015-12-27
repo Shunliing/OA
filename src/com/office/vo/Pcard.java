@@ -1,8 +1,14 @@
 package com.office.vo;
 
 import java.io.Serializable;
-
+/*
+ * 公告相关VO
+ */
 public class Pcard implements Serializable{
+	/**
+	 * @Field serialVersionUID
+	 */
+	private static final long serialVersionUID = -6518981761289472585L;
 	private int pcardid;
 	private String time;
 	private String content;

@@ -61,7 +61,7 @@ public class Page {
 	public ResultSet getRs(){
 		int rspos=(this.current_page-1)*this.num_per+1;
 		try{
-		    this.rs.absolute(rspos);
+		  // this.rs.absolute(rspos);
 		    this.rs.previous();
 		}
 		catch(Exception e){e.printStackTrace();}

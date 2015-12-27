@@ -1,5 +1,7 @@
 package com.office.vo;
-
+/*
+ * 公告相关VO
+ */
 public class Document {
 	private int textid;
 	private String geter;

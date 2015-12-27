@@ -1,5 +1,7 @@
 package com.office.vo;
-
+/*
+ * 会议通知VO
+ */
 public class Meet {
 	private int meetid;
 	private String time;
