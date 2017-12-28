@@ -20,7 +20,7 @@ import com.office.vo.Document;
 import com.office.vo.Meet;
 import com.office.vo.Pcard;
 /*
- * 数据库工具类，不如使用apache的DBUtils
+ * 数据库工具类，不如使用apache的DBUtils,换回去
  */
 public class DBUtil {
 	//使用属性文件
